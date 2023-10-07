@@ -71,58 +71,47 @@ function App() {
     }
   }, [map, mapTarget]);
 
+  const filterByLen = (recordValue, filterValue) => {
+    const [recordInt, recordDec] = String(recordValue).split(".");
+    const [filterInt, filterDec] = filterValue.split(".");
+  
+    if (filterDec && filterDec.length > 0) {
+      return recordInt === filterInt && recordDec?.startsWith(filterDec);
+    }
+  
+    return recordInt === filterInt;
+  };
+    
+  const filterByWkt = (recordValue, filterValue) => {
+    if (recordValue.includes(filterValue)) return true;
+  
+    const regex = new RegExp(`(${parseInt(filterValue, 10)}.[0-9]*)`, "g");
+    const match = recordValue.match(regex);
+    return match && match.some((coord) => coord.startsWith(filterValue));
+  };
+  
   useEffect(() => {
     const result = fileData.filter((record) => {
       for (let key in filters) {
-        if (!filters[key]) continue;
-        if (key === "len" && filters[key]) {
-          const filterValue = filters[key];
-          const recordValue = String(record[key]);
-
-          if (filterValue.includes(".")) {
-            const [filterInt, filterDec] = filterValue.split(".");
-
-            if (recordValue.includes(".")) {
-              const [recordInt, recordDec] = recordValue.split(".");
-              if (filterInt === recordInt && recordDec.startsWith(filterDec)) {
-                return true;
-              }
-            } else if (filterInt === recordValue) {
-              return true;
-            }
-
-            return false;
-          } else {
-            if (recordValue.split(".")[0] === filterValue) {
-              return true;
-            }
-            return false;
-          }
-        }
-        if (key === "wkt") {
-          if (record[key].includes(filters[key])) {
-            continue;
-          }
-
-          const regex = new RegExp(
-            `(${parseInt(filters[key], 10)}.[0-9]*)`,
-            "g"
-          );
-          const match = record[key].match(regex);
-          if (match && match.some((coord) => coord.startsWith(filters[key]))) {
-            continue;
-          }
-
-          return false;
-        }
-
-        if (String(record[key]) !== filters[key]) {
-          return false;
+        const filterValue = filters[key];
+        if (!filterValue) continue;
+        
+        const recordValue = String(record[key]);
+  
+        switch (key) {
+          case "len":
+            if (!filterByLen(recordValue, filterValue)) return false;
+            break;
+          case "wkt":
+            if (!filterByWkt(recordValue, filterValue)) return false;
+            break;
+          default:
+            if (recordValue !== filterValue) return false;
         }
       }
       return true;
     });
-
+  
     setFilteredData(result);
   }, [fileData, filters]);
 
