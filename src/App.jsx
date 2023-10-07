@@ -155,6 +155,9 @@ function App() {
   };
 
   const handleShowOnMap = (record) => {
+    if (!record.wkt) {
+      setShowModalMap(true);
+    } else {
     const wktFormat = new WKT();
     const feature = wktFormat.readFeature(record.wkt, {
       dataProjection: "EPSG:4326",
@@ -173,6 +176,7 @@ function App() {
 
     map.addLayer(vectorLayer);
     map.getView().fit(vectorSource.getExtent(), { padding: [50, 50, 50, 50] });
+   }
   };
 
   const handleAddRecord = () => {
