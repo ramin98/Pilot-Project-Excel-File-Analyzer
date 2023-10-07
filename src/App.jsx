@@ -219,21 +219,18 @@ function App() {
       setShowErrorEditStatus(true);
       return;
     }
+    
     if (editingId) {
-      handleEditRecord(editingId);
+      const updatedData = fileData.map((record) => {
+        if (record.id === editingId) {
+          return { ...record, ...formDataEdit };
+        }
+        return record;
+      });
+      setFileData(updatedData);
+      setShowModalEdit(false);
       setEditingId(null);
     }
-  };
-
-  const handleEditRecord = (id) => {
-    const updatedData = fileData.map((record) => {
-      if (record.id === id) {
-        return { ...record, ...formDataEdit };
-      }
-      return record;
-    });
-    setFileData(updatedData);
-    setShowModalEdit(false);
   };
 
   const handleEdit = (record) => {
