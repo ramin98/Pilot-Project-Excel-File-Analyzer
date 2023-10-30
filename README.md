@@ -1,5 +1,14 @@
 https://excel-file-analyzer.netlify.app/
 
+
+This React application is designed for the analysis and visualization of geospatial data, as well as for working with tables derived from Excel files. Here is a list of the technologies used in the project:
+
+Ant Design (antd): A UI component library for styling interface elements. XLSX: A library for reading and processing data from Excel files. OpenLayers (ol): A library for cartographic operations, such as map display and vector layer management. Recharts: A library for building charts and diagrams based on React and D3. CSS and ol.css: Styling the appearance of the application and the map. The application includes the following features:
+
+Loading and reading data from Excel files. Visualization of data on an interactive map using OpenLayers vector layers. Filtering displayed data based on set criteria. Visualization of statistical data in the form of charts and graphs using Recharts. Adding, editing, and deleting entries through modal forms.
+
+---------------------------------------------------------------------------------------
+
 Это React-приложение, предназначенное для анализа и визуализации геопространственных данных, а также для работы с таблицами, полученными из Excel-файлов. Вот список использованных в проекте технологий:
 
 Ant Design (antd): Библиотека компонентов UI для оформления элементов интерфейса.
